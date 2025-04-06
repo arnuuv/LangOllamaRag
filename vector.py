@@ -23,3 +23,16 @@ if add_documents:
     )
   ids.append(str(i))
   documents.append(document)
+  
+vector_store = Chroma(
+  collection_name = "restaurant_reviews",
+  persist_Directory = db_location,
+  embedding_function = embeddings
+)
+
+
+if add_documents:
+  vector_store.add_documents(documents = documents,ids=ids)
+  retriever = vector_store.as_retriever(
+    search_kwargs = {"k":5}
+  )
