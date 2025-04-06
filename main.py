@@ -9,6 +9,8 @@ You are an expert in answering questions about a pizza restaurant
 Here are some relevant reviews: {reviews}
 
 Here is the question to answer: {question}
+
+Answer the question based on the reviews provided. If the reviews don't contain relevant information, say so.
 """
  
 prompt = ChatPromptTemplate.from_template(template)
@@ -23,5 +25,9 @@ while True:
   if question == "q":
     break
   reviews = retriever.invoke(question)
-  result = chain.invoke({"reviews":[], "question":"What is the best pizza place in town?"})
+  print("Retrieved reviews:", reviews)  # Debug line to see what's being retrieved
+  result = chain.invoke({
+    "reviews": reviews,
+    "question": question
+  })
   print(result)  
