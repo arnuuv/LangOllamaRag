@@ -26,7 +26,7 @@ if add_documents:
   
 vector_store = Chroma(
   collection_name = "restaurant_reviews",
-  persist_Directory = db_location,
+  persist_directory = db_location,
   embedding_function = embeddings
 )
 
