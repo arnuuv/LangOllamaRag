@@ -17,6 +17,16 @@ Provide a conversational response based on these reviews. Be specific about what
 prompt = ChatPromptTemplate.from_template(template)
 chain = prompt | model
 
+def calculate_average_rating(reviews):
+    """Calculate the average rating from retrieved reviews."""
+    total = 0
+    count = 0
+    for review in reviews:
+        if 'rating' in review.metadata:
+            total += review.metadata['rating']
+            count += 1
+    return round(total / count, 1) if count > 0 else "No ratings found"
+
 while True:
     print("\n\n---------------------------------")
     question = input("Ask your question (q to quit): ")
@@ -26,6 +36,11 @@ while True:
     if question == "q":
         break
     reviews = retriever.invoke(question)
+    
+    # Calculate and display average rating
+    avg_rating = calculate_average_rating(reviews)
+    print(f"Average rating from relevant reviews: {avg_rating}/5")
+    
     result = chain.invoke({
         "reviews": reviews,
         "question": question
